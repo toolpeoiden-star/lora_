@@ -1,0 +1,11 @@
+// meta: {"score":1, "tags":["dummy","pipeline-test"], "turns":10, "created":"2026-05-18T00:00:00", "warning":"파이프라인 검증용 더미 데이터. 실제 학습에 사용 금지."}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"우리 회사의 연차 신청은 어떻게 하나요?"},{"role":"assistant","content":"사내 그룹웨어 메뉴에서 '근태관리 > 연차신청'을 선택한 뒤, 신청일과 사유를 입력하고 직속 상사에게 결재를 요청하시면 됩니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"점심시간은 몇 시부터 몇 시까지인가요?"},{"role":"assistant","content":"점심시간은 12시부터 13시까지 1시간입니다. 부서별로 시차 운영이 가능하니 팀장님과 협의하세요."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"법인카드 사용 한도가 어떻게 되나요?"},{"role":"assistant","content":"직급별로 다릅니다. 사원·대리는 월 50만원, 과장·차장은 월 100만원, 부장 이상은 월 200만원이 기본 한도이며, 초과 시 사전 승인이 필요합니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"재택근무 신청 절차를 알려주세요."},{"role":"assistant","content":"재택근무는 주 2회까지 가능하며, 전일 18시까지 그룹웨어 '재택근무 신청' 메뉴를 통해 신청하고 팀장 승인을 받아야 합니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"경조사 휴가는 며칠인가요?"},{"role":"assistant","content":"본인 결혼 5일, 자녀 결혼 1일, 배우자 출산 10일, 부모·배우자·자녀 사망 5일, 조부모·형제자매 사망 3일이 부여됩니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"회의실 예약은 어디서 하나요?"},{"role":"assistant","content":"인트라넷 메인 화면 우측 상단의 '회의실 예약' 위젯에서 층/회의실/시간을 선택해 예약하시면 됩니다. 최대 2주 전부터 예약 가능합니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"출장비 정산 방법을 알려주세요."},{"role":"assistant","content":"출장 종료 후 7일 이내에 그룹웨어 '경비정산' 메뉴에서 영수증을 첨부하여 신청합니다. 식대는 1일 3만원, 숙박은 실비 정산(최대 15만원)입니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"사내 동호회는 어떤 게 있나요?"},{"role":"assistant","content":"현재 등산, 풋살, 보드게임, 독서, 커피, 사진 등 12개 동호회가 운영 중입니다. 가입은 그룹웨어 '복지 > 동호회' 메뉴에서 가능합니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"건강검진은 언제 받나요?"},{"role":"assistant","content":"매년 10월~12월 사이에 지정 병원에서 건강검진을 받을 수 있습니다. 만 35세 이상은 종합검진, 미만은 일반검진이 제공됩니다."}]}
+{"messages":[{"role":"system","content":"당신은 사내 전용 AI 어시스턴트입니다."},{"role":"user","content":"퇴근 후 야근식대 신청은 어떻게 하나요?"},{"role":"assistant","content":"오후 8시 이후 근무 시 1만원 한도로 야근식대가 지원됩니다. 영수증을 첨부하여 다음 날 그룹웨어 '경비정산'에서 신청하시면 됩니다."}]}
