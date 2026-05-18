@@ -1,7 +1,8 @@
 # Ollama Modelfile for Qwen2.5-7B + 사내 LoRA
-# deploy.ps1이 FROM 경로를 실제 GGUF 파일로 치환합니다.
+# Ollama가 safetensors 폴더를 직접 읽어 내부에서 GGUF 변환합니다.
+# deploy.ps1이 FROM 경로를 실제로 치환합니다.
 
-FROM ./gguf/PLACEHOLDER.gguf
+FROM ./gguf
 
 TEMPLATE """{{ if .System }}<|im_start|>system
 {{ .System }}<|im_end|>

@@ -8,16 +8,16 @@ $GGUF_DIR = "$PSScriptRoot\gguf"
 $MODELFILE = "$PSScriptRoot\Modelfile"
 $MODELFILE_TMP = "$PSScriptRoot\Modelfile.tmp"
 
-# --- 1. 최신 GGUF 파일 찾기 ---
-$gguf = Get-ChildItem $GGUF_DIR -Filter "*.gguf" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-if (-not $gguf) {
-    Write-Host "❌ gguf 파일이 없습니다. 먼저 export_gguf.py 실행." -ForegroundColor Red
+# --- 1. safetensors 폴더 확인 (Ollama가 자체 변환) ---
+$safetensors = Get-ChildItem $GGUF_DIR -Filter "*.safetensors" -ErrorAction SilentlyContinue
+if (-not $safetensors) {
+    Write-Host "❌ safetensors 파일이 없습니다. 먼저 export_gguf.py 실행." -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ GGUF: $($gguf.Name)" -ForegroundColor Green
+Write-Host "✓ safetensors 발견: $($safetensors.Count)개 파일" -ForegroundColor Green
 
-# --- 2. Modelfile 경로 치환 ---
-(Get-Content $MODELFILE -Raw) -replace "PLACEHOLDER.gguf", $gguf.Name | Set-Content $MODELFILE_TMP -Encoding UTF8
+# --- 2. Modelfile 그대로 사용 (FROM ./gguf) ---
+Copy-Item $MODELFILE $MODELFILE_TMP -Force
 
 # --- 3. Ollama 등록 ---
 Write-Host "`n[1/3] Ollama 모델 등록..." -ForegroundColor Cyan
