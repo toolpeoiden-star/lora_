@@ -11,8 +11,8 @@
 
 ### 최초 1회
 ```powershell
-git clone https://github.com/toolpeoiden-star/lora_mcp.git
-cd lora_mcp
+git clone https://github.com/tlstjdgh21/loRA_mcp.git
+cd loRA_mcp
 .\train\setup_windows.ps1
 ```
 PyTorch nightly(CUDA 12.8) + Unsloth + llama.cpp 설치. 30분~1시간.
