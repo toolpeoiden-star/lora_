@@ -2,3 +2,14 @@
 Thumbs.db
 *.tmp
 .claude/
+
+# 학습 산출물 (용량 큼)
+venv/
+llama.cpp/
+train/data/
+train/lora_out/
+train/gguf/
+*.gguf
+*.safetensors
+__pycache__/
+*.pyc

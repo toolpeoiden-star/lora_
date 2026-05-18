@@ -1,0 +1,20 @@
+# Ollama Modelfile for Qwen2.5-7B + 사내 LoRA
+# deploy.ps1이 FROM 경로를 실제 GGUF 파일로 치환합니다.
+
+FROM ./gguf/PLACEHOLDER.gguf
+
+TEMPLATE """{{ if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{ if .Prompt }}<|im_start|>user
+{{ .Prompt }}<|im_end|>
+{{ end }}<|im_start|>assistant
+{{ .Response }}<|im_end|>"""
+
+PARAMETER stop "<|im_start|>"
+PARAMETER stop "<|im_end|>"
+PARAMETER temperature 0.7
+PARAMETER top_p 0.8
+PARAMETER repeat_penalty 1.05
+PARAMETER num_ctx 8192
+
+SYSTEM """당신은 사내 전용 AI 어시스턴트입니다. 한국어로 정확하고 간결하게 답변하세요."""
