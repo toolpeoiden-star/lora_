@@ -37,9 +37,9 @@ OUTPUT_DIR = ROOT / "train" / "lora_out_vision"
 
 # gemma4 정확한 모델 ID는 Hugging Face에서 확인 후 교체.
 # 출시 직후 후보 이름 (실제 ID는 확인 필요):
-#   "google/gemma-4-12b-it"  ← instruct 버전
+#   "google/gemma-4-12B-it"  ← instruct 버전
 #   "google/gemma-4-12b"     ← base
-MODEL_ID = os.environ.get("BASE_MODEL", "google/gemma-4-12b-it")
+MODEL_ID = os.environ.get("BASE_MODEL", "google/gemma-4-12B-it")
 MAX_IMAGE_SIZE = int(os.environ.get("MAX_IMAGE_SIZE", "448"))
 
 

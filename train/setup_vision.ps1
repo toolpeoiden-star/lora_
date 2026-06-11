@@ -23,7 +23,7 @@ gemma4 12b instruct 모델은 출시 직후라 정확한 ID 확인 후 사용:
   https://huggingface.co/google 에서 검색 → 정확한 ID 복사
 
 예시 (실제 ID는 다를 수 있음):
-  `$env:BASE_MODEL='google/gemma-4-12b-it'
+  `$env:BASE_MODEL='google/gemma-4-12B-it'
   python train\train_lora_vision.py
 
 또는 train_lora_vision.py 의 MODEL_ID 상수를 직접 수정.

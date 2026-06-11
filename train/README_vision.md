@@ -6,7 +6,7 @@
 ## ⚠️ 호환성 주의
 
 - **gemma4는 2026-06-03 출시**. Unsloth/transformers의 비전 지원이 출시 초기라 불안정 가능.
-- 정확한 Hugging Face 모델 ID 확인 필요 (`google/gemma-4-12b-it` 추정).
+- 정확한 Hugging Face 모델 ID 확인 필요 (`google/gemma-4-12B-it` 추정).
 - `train_lora_vision.py` 의 `target_modules` 가 모델 실제 구조와 안 맞으면
   `model.print_trainable_parameters()` 결과 확인 후 조정.
 
@@ -89,7 +89,7 @@ python train\eval_lora_vision.py --base
 ### 5. 학습 실행
 
 ```powershell
-$env:BASE_MODEL='google/gemma-4-12b-it'  # 실제 ID 확인 후 사용
+$env:BASE_MODEL='google/gemma-4-12B-it'  # 실제 ID 확인 후 사용
 python train\train_lora_vision.py
 ```
 
@@ -129,7 +129,7 @@ dev 서버 재시작.
 
 ```python
 from transformers import AutoModelForImageTextToText
-m = AutoModelForImageTextToText.from_pretrained("google/gemma-4-12b-it")
+m = AutoModelForImageTextToText.from_pretrained("google/gemma-4-12B-it")
 for n, _ in m.named_modules():
     if "proj" in n or "linear" in n:
         print(n)

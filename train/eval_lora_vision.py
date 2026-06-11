@@ -29,7 +29,7 @@ from peft import PeftModel
 ROOT = Path(__file__).parent.parent
 EVAL_DIR = ROOT / "dataset" / "eval"
 LORA_DIR = ROOT / "train" / "lora_out_vision" / "final"
-MODEL_ID = "google/gemma-4-12b-it"
+MODEL_ID = "google/gemma-4-12B-it"
 
 
 def extract_dish_names(text: str) -> list:
