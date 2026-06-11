@@ -71,8 +71,8 @@ class VisionSFTDataset(Dataset):
         img_path = Path(raw) if Path(raw).is_absolute() else self.root / raw
         # 이미지 로드 + 리사이즈 (메모리 절약)
         img = Image.open(img_path).convert("RGB")
-        if max(img.size) > MAX_IMAGE_SIZE:
-            img.thumbnail((MAX_IMAGE_SIZE, MAX_IMAGE_SIZE), Image.LANCZOS)
+        # 정확히 정사각형으로 — batch stack 안전 + 일관된 입력 크기
+        img = img.resize((MAX_IMAGE_SIZE, MAX_IMAGE_SIZE), Image.LANCZOS)
 
         # gemma4 chat template — multimodal messages
         messages = [
@@ -95,9 +95,9 @@ class VisionSFTDataset(Dataset):
             text=text,
             images=img,
             return_tensors="pt",
-            padding="max_length",
+            padding=False,         # 패딩 안 함 — collator에서 dynamic padding
             truncation=True,
-            max_length=1024,
+            max_length=512,        # 우리 응답은 짧아서 512면 충분
         )
         # batch dim 제거
         inputs = {k: v.squeeze(0) for k, v in inputs.items()}
@@ -203,7 +203,7 @@ def main():
         seed=42,
         report_to="none",
         remove_unused_columns=False,
-        dataloader_num_workers=2,
+        dataloader_num_workers=0,   # Windows에서는 0이 보통 더 빠름
     )
 
     trainer = Trainer(
