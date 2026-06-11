@@ -103,7 +103,9 @@ def main():
     samples_log = []
 
     for rec in records:
-        img = Image.open(ROOT / rec["image_path"]).convert("RGB")
+        raw = rec["image_path"]
+        img_p = Path(raw) if Path(raw).is_absolute() else ROOT / raw
+        img = Image.open(img_p).convert("RGB")
         if max(img.size) > 448:
             img.thumbnail((448, 448), Image.LANCZOS)
         # 정답 파싱

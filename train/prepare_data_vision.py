@@ -22,6 +22,7 @@
 """
 
 import json
+import os
 import random
 import re
 from pathlib import Path
@@ -30,6 +31,12 @@ ROOT = Path(__file__).parent.parent
 DATA_DIR = ROOT / "dataset"
 OUT_DIR = ROOT / "train" / "data_vision"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# 데이터셋 위치를 환경변수로 덮어쓰기 가능 (대용량 데이터를 별도 경로에 둘 때)
+#   $env:AIHUB_DIR='C:\Users\user\Desktop\한국 음식 이미지\kfood'
+#   $env:CALORIE_AI_DIR='C:\path\to\calorie_ai'
+AIHUB_DIR = Path(os.environ.get("AIHUB_DIR", str(DATA_DIR / "aihub")))
+CALORIE_AI_DIR = Path(os.environ.get("CALORIE_AI_DIR", str(DATA_DIR / "calorie_ai")))
 
 # 학습용 프롬프트 — calorie-ai 앱과 동일하게 유지 (테스트 환경 일치)
 PROMPT_TEMPLATE = """당신은 한국 음식 영양 분석 전문가입니다. 사진 속 음식을 분석하세요.
@@ -80,12 +87,14 @@ def make_answer_from_user_final(user_final: list) -> str:
 
 
 def collect_aihub() -> list:
-    """AI Hub 폴더 구조: dataset/aihub/{Training,Validation}/image/{class}/*.jpg"""
+    """AI Hub 폴더에서 이미지 재귀 탐색. 부모 폴더명 = 클래스명.
+    실제 구조 예: kfood/구이/구이/갈비구이/*.jpg → 클래스 '갈비구이'."""
     records = []
-    aihub_root = DATA_DIR / "aihub"
+    aihub_root = AIHUB_DIR
     if not aihub_root.exists():
         print(f"  [skip] AI Hub 폴더 없음: {aihub_root}")
         return records
+    print(f"  [aihub] 탐색 시작: {aihub_root}")
 
     # 폴더 구조가 데이터셋마다 다를 수 있어 광범위 탐색
     image_exts = {".jpg", ".jpeg", ".png", ".webp"}
@@ -104,7 +113,7 @@ def collect_aihub() -> list:
         if not class_name:
             continue
         records.append({
-            "image_path": str(img_path.relative_to(ROOT)).replace("\\", "/"),
+            "image_path": str(img_path).replace("\\", "/"),  # 절대경로 (ROOT 밖에 있을 수 있음)
             "prompt": PROMPT_TEMPLATE,
             "answer": make_answer_from_class(class_name),
             "source": "aihub",
@@ -118,7 +127,7 @@ def collect_aihub() -> list:
 def collect_calorie_ai() -> list:
     """calorie-ai 앱의 training-log + uploads."""
     records = []
-    ca_root = DATA_DIR / "calorie_ai"
+    ca_root = CALORIE_AI_DIR
     if not ca_root.exists():
         print(f"  [skip] calorie-ai 폴더 없음: {ca_root}")
         return records
@@ -148,7 +157,7 @@ def collect_calorie_ai() -> list:
                 if not img_full.exists():
                     continue
                 records.append({
-                    "image_path": str(img_full.relative_to(ROOT)).replace("\\", "/"),
+                    "image_path": str(img_full).replace("\\", "/"),  # 절대경로
                     "prompt": PROMPT_TEMPLATE,
                     "answer": make_answer_from_user_final(user_final),
                     "source": "calorie_ai",

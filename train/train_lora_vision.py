@@ -66,7 +66,9 @@ class VisionSFTDataset(Dataset):
 
     def __getitem__(self, idx):
         rec = self.records[idx]
-        img_path = self.root / rec["image_path"]
+        # 절대경로면 그대로, 상대경로면 ROOT 기준으로 해석
+        raw = rec["image_path"]
+        img_path = Path(raw) if Path(raw).is_absolute() else self.root / raw
         # 이미지 로드 + 리사이즈 (메모리 절약)
         img = Image.open(img_path).convert("RGB")
         if max(img.size) > MAX_IMAGE_SIZE:
