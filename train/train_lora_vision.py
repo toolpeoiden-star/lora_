@@ -142,6 +142,8 @@ def main():
             "patch_ln2",
             "multi_modal_projector",
             "vision_projector",
+            "lm_head",         # bnb 4bit state init 실패 회피
+            "embed_tokens",    # 입력 임베딩도 보통 제외
         ],
     )
 
@@ -150,7 +152,7 @@ def main():
         MODEL_ID,
         quantization_config=bnb_config,
         torch_dtype=torch.bfloat16,
-        device_map="auto",
+        device_map={"": 0},   # 전체 모델을 GPU 0에 강제 배치 (auto split이 4bit state init 깨는 이슈 회피)
         trust_remote_code=True,
     )
     model = prepare_model_for_kbit_training(model)
