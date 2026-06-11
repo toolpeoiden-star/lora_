@@ -126,11 +126,23 @@ def main():
     print(f"[1/5] 모델 로드: {MODEL_ID}")
     print(f"      MAX_IMAGE_SIZE={MAX_IMAGE_SIZE}, output={OUTPUT_DIR}")
 
+    # vision encoder는 양자화 제외 — bnb 4bit weight가 uint8이라 .to(weight.dtype)이
+    # pixel_values를 uint8로 만들고 LayerNorm에서 죽는 이슈 회피.
+    # LLM(language model) 부분만 4bit. VRAM 약간 더 사용하지만 5080 16GB에 들어감.
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.bfloat16,
         bnb_4bit_quant_type="nf4",
         bnb_4bit_use_double_quant=True,
+        llm_int8_skip_modules=[
+            "embed_vision",
+            "vision_tower",
+            "patch_dense",
+            "patch_ln1",
+            "patch_ln2",
+            "multi_modal_projector",
+            "vision_projector",
+        ],
     )
 
     processor = AutoProcessor.from_pretrained(MODEL_ID, trust_remote_code=True)
