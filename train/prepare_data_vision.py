@@ -109,7 +109,7 @@ def collect_aihub() -> list:
         }:
             continue
         # 클래스명에 숫자 prefix가 있으면 제거: "001_김치찌개" -> "김치찌개"
-        class_name = re.sub(r"^\d+[_-\s]*", "", class_name).strip()
+        class_name = re.sub(r"^\d+[\s_-]*", "", class_name).strip()
         if not class_name:
             continue
         records.append({
