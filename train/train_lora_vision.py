@@ -101,6 +101,17 @@ class VisionSFTDataset(Dataset):
         )
         # batch dim 제거
         inputs = {k: v.squeeze(0) for k, v in inputs.items()}
+
+        # gemma4 processor가 pixel_values를 uint8로 유지하는 케이스 대응
+        # LayerNorm은 float만 받으므로 bf16으로 변환 + 0-1 정규화
+        if "pixel_values" in inputs:
+            pv = inputs["pixel_values"]
+            if pv.dtype == torch.uint8:
+                pv = pv.float() / 255.0
+            if pv.dtype not in (torch.bfloat16, torch.float16, torch.float32):
+                pv = pv.float()
+            inputs["pixel_values"] = pv.to(torch.bfloat16)
+
         inputs["labels"] = inputs["input_ids"].clone()
         # 패딩 토큰 위치는 loss에서 제외
         if "attention_mask" in inputs:
