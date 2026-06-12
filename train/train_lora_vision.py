@@ -135,15 +135,15 @@ def main():
         bnb_4bit_quant_type="nf4",
         bnb_4bit_use_double_quant=True,
         llm_int8_skip_modules=[
+            # Vision encoder + multimodal connector — 4bit weight가 uint8 propagation 일으킴
             "embed_vision",
-            "vision_tower",
-            "patch_dense",
-            "patch_ln1",
-            "patch_ln2",
-            "multi_modal_projector",
-            "vision_projector",
-            "lm_head",         # bnb 4bit state init 실패 회피
-            "embed_tokens",    # 입력 임베딩도 보통 제외
+            "patch_dense", "patch_ln1", "patch_ln2", "pos_norm",
+            "multimodal_embedder",
+            "embedding_projection",
+            "embedding_pre_projection_norm",
+            # LLM 입출력
+            "lm_head",
+            "embed_tokens",
         ],
     )
 
@@ -163,7 +163,7 @@ def main():
     lora_cfg = LoraConfig(
         r=16,
         lora_alpha=32,
-        lora_dropout=0.05,
+        lora_dropout=0.0,   # vision LoRA에서 uint8 dropout 이슈 회피
         bias="none",
         task_type="CAUSAL_LM",
         target_modules=[
