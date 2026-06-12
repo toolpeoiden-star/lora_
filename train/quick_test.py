@@ -64,15 +64,18 @@ def main():
 
     # 모델 로드 (학습과 동일한 양자화 설정)
     print(f"모델 로드: {MODEL_ID}{' + LoRA' if not args.base else ' (베이스만)'}")
+    # 학습 시 사용한 skip_modules와 정확히 일치시켜야 LoRA adapter가 올바른 weight에 적용됨.
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.bfloat16,
         bnb_4bit_quant_type="nf4",
         bnb_4bit_use_double_quant=True,
         llm_int8_skip_modules=[
-            "embed_vision", "vision_tower",
-            "patch_dense", "patch_ln1", "patch_ln2",
-            "multi_modal_projector", "vision_projector",
+            "embed_vision",
+            "patch_dense", "patch_ln1", "patch_ln2", "pos_norm",
+            "multimodal_embedder",
+            "embedding_projection",
+            "embedding_pre_projection_norm",
             "lm_head", "embed_tokens",
         ],
     )
