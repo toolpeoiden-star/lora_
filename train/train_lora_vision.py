@@ -167,8 +167,13 @@ def main():
         bias="none",
         task_type="CAUSAL_LM",
         target_modules=[
+            # LLM 부분 (attention + MLP)
             "q_proj", "k_proj", "v_proj", "o_proj",
             "gate_proj", "up_proj", "down_proj",
+            # Vision → Text 연결 부분 — 1차 학습에서 누락. 이게 핵심 수정.
+            # PEFT는 부분 매칭이므로 모듈명 끝부분과 매칭됨.
+            "embedding_projection",   # multimodal_embedder.embedding_projection
+            "patch_dense",            # embed_vision.patch_dense
         ],
     )
     model = get_peft_model(model, lora_cfg)

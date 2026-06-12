@@ -53,15 +53,46 @@ JSON으로만 답하라:
 {"items":[{"dish_name_ko":"...","cooking_method":"...","grams_typical":...,"confidence":"..."}],"not_food":false}"""
 
 
+# 클래스명에서 조리법 추출. 끝/포함 키워드 우선순위 순.
+_COOKING_KEYWORDS = [
+    ("조림", "조림"), ("볶음", "볶음"), ("튀김", "튀김"), ("구이", "구이"),
+    ("찌개", "찌개"), ("전골", "전골"), ("탕", "국탕"),
+    ("국", "국탕"), ("찜", "찜"), ("무침", "무침"),
+    ("나물", "무침"), ("장아찌", "절임"), ("김치", "절임"),
+    ("전", "전"), ("죽", "죽"), ("밥", "밥"),
+    ("냉면", "면"), ("국수", "면"), ("면", "면"),
+    ("회", "생"), ("회무침", "무침"),
+]
+
+def infer_cooking_method(class_name: str) -> str:
+    for kw, label in _COOKING_KEYWORDS:
+        if kw in class_name:
+            return label
+    return ""
+
+# 음식 종류별 표준 1회 제공량 (대략)
+_GRAMS_BY_METHOD = {
+    "국탕": 350, "찌개": 300, "전골": 400,
+    "면": 350, "밥": 300, "죽": 300,
+    "무침": 60, "절임": 50,
+    "조림": 100, "볶음": 100, "찜": 200,
+    "구이": 150, "튀김": 100, "전": 100,
+    "생": 80, "": 120,
+}
+
 def make_answer_from_class(class_name: str, default_grams: int = 150) -> str:
-    """AI Hub 단일 클래스 라벨 → 학습용 정답 JSON."""
+    """AI Hub 단일 클래스 라벨 → 학습용 정답 JSON.
+    cooking_method와 grams_typical을 클래스별로 다양화해서
+    모델이 '모든 답이 같은 형식' 외우는 mode collapse 방지."""
+    method = infer_cooking_method(class_name)
+    grams = _GRAMS_BY_METHOD.get(method, default_grams)
     return json.dumps(
         {
             "items": [
                 {
                     "dish_name_ko": class_name,
-                    "cooking_method": "",
-                    "grams_typical": default_grams,
+                    "cooking_method": method,
+                    "grams_typical": grams,
                     "confidence": "high",
                 }
             ],
